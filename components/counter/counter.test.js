@@ -4,52 +4,37 @@ import { Provider } from "react-redux";
 import { makeStore } from "../../app/store";
 import Counter from "./Counter";
 
-describe("<Counter />", () => {
-  it("renders the component", () => {
-    const store = makeStore();
-    render(
-      <Provider store={store}>
-        <Counter />
-      </Provider>
-    );
+const renderWrappedCounter = () => {
+  const store = makeStore();
+  render(
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+};
 
+describe("<Counter />", () => {
+  beforeEach(() => {
+    renderWrappedCounter();
+  });
+
+  it("renders the component", () => {
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
   it("decrements the value", async () => {
-    const store = makeStore();
-    render(
-      <Provider store={store}>
-        <Counter />
-      </Provider>
-    );
-
     await user.click(screen.getByRole("button", { name: /decrement value/i }));
 
     expect(screen.getByText("-1")).toBeInTheDocument();
   });
 
   it("increments the value", async () => {
-    const store = makeStore();
-    render(
-      <Provider store={store}>
-        <Counter />
-      </Provider>
-    );
-
     await user.click(screen.getByRole("button", { name: /increment value/i }));
 
     expect(screen.getByText("1")).toBeInTheDocument();
   });
 
   it("increments by amount", async () => {
-    const store = makeStore();
-    render(
-      <Provider store={store}>
-        <Counter />
-      </Provider>
-    );
-
     await user.type(screen.getByLabelText(/set increment amount/i), "{backspace}5");
     await user.click(screen.getByRole("button", { name: /add amount/i }));
 
@@ -57,13 +42,6 @@ describe("<Counter />", () => {
   });
 
   it("increments async", async () => {
-    const store = makeStore();
-    render(
-      <Provider store={store}>
-        <Counter />
-      </Provider>
-    );
-
     await user.type(screen.getByLabelText(/set increment amount/i), "{backspace}3");
     await user.click(screen.getByRole("button", { name: /add async/i }));
 
